@@ -1,59 +1,236 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Vehicle Requisition System - Laravel Application
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A comprehensive vehicle requisition management system built with Laravel 10+ for Oxfam Bangladesh.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### User Roles
+1. **Guest User**: Can view public information
+2. **Authenticated User**: Can submit vehicle requisition forms and manage their profile
+3. **Admin**: Full system access, can view all activities, export data to Excel/PDF
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Core Functionality
+- Vehicle requisition form submission
+- User profile management
+- Admin dashboard with analytics
+- Activity logging and monitoring
+- Export data to Excel and PDF formats
+- Multi-user authentication system
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Requirements
 
-## Learning Laravel
+- PHP >= 8.1
+- Composer
+- MySQL >= 5.7 or PostgreSQL
+- Node.js & NPM (for frontend assets)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Installation
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 1. Clone or Extract the Project
 
-## Laravel Sponsors
+```bash
+cd your-project-directory
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 2. Install PHP Dependencies
 
-### Premium Partners
+```bash
+composer install
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 3. Environment Setup
+
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+### 4. Configure Database
+
+Edit `.env` file:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=vehicle_requisition
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+```
+
+### 5. Run Migrations and Seeders
+
+```bash
+php artisan migrate --seed
+```
+
+This will create:
+- Admin user: admin@oxfam.org / password123
+- Test user: user@oxfam.org / password123
+
+### 6. Install Frontend Dependencies
+
+```bash
+npm install
+npm run build
+```
+
+### 7. Start the Development Server
+
+```bash
+php artisan serve
+```
+
+Visit: `http://localhost:8000`
+
+## User Credentials (Default)
+
+### Admin Access
+- Email: admin@oxfam.org
+- Password: password123
+
+### Regular User
+- Email: user@oxfam.org
+- Password: password123
+
+## Project Structure
+
+```
+vehicle-requisition-system/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── Admin/
+│   │   │   │   ├── DashboardController.php
+│   │   │   │   ├── UserController.php
+│   │   │   │   └── ExportController.php
+│   │   │   ├── Auth/
+│   │   │   ├── ProfileController.php
+│   │   │   └── VehicleRequisitionController.php
+│   │   └── Middleware/
+│   │       └── AdminMiddleware.php
+│   ├── Models/
+│   │   ├── User.php
+│   │   ├── VehicleRequisition.php
+│   │   ├── Passenger.php
+│   │   └── ActivityLog.php
+│   └── Exports/
+│       └── RequisitionsExport.php
+├── database/
+│   ├── migrations/
+│   └── seeders/
+├── resources/
+│   └── views/
+│       ├── admin/
+│       ├── auth/
+│       ├── profile/
+│       └── requisitions/
+└── routes/
+    └── web.php
+```
+
+## Usage Guide
+
+### For Regular Users
+
+1. **Register/Login**: Create an account or login
+2. **Submit Requisition**: Fill out the vehicle requisition form
+3. **View Profile**: Manage your personal information
+4. **Track Submissions**: View your requisition history
+
+### For Admins
+
+1. **Dashboard**: View system statistics and recent activities
+2. **User Management**: View and manage all users
+3. **Requisition Management**: View, approve, or reject requisitions
+4. **Export Data**: Download requisitions as Excel or PDF
+5. **Activity Logs**: Monitor all user activities
+
+## Export Features
+
+### Excel Export
+- Download all requisitions with full details
+- Includes user information, journey details, and budget codes
+- Supports filtering by date range
+
+### PDF Export
+- Generate formatted PDF reports
+- Individual requisition forms
+- Batch export multiple requisitions
+
+## Security Features
+
+- CSRF protection on all forms
+- Password hashing with Bcrypt
+- Role-based access control
+- Activity logging
+- Session management
+
+## API Documentation
+
+### Export Endpoints
+
+```
+GET /admin/export/excel - Export all requisitions to Excel
+GET /admin/export/pdf - Export all requisitions to PDF
+GET /admin/export/requisition/{id}/pdf - Export single requisition
+```
+
+## Customization
+
+### Adding New Fields
+
+1. Create migration:
+```bash
+php artisan make:migration add_field_to_vehicle_requisitions
+```
+
+2. Update model in `app/Models/VehicleRequisition.php`
+3. Update form view in `resources/views/requisitions/create.blade.php`
+4. Update controller validation
+
+### Modifying User Roles
+
+Edit `database/seeders/UserSeeder.php` to add more roles or permissions.
+
+## Troubleshooting
+
+### Common Issues
+
+**Database Connection Error**
+- Check `.env` database credentials
+- Ensure MySQL/PostgreSQL is running
+- Create database manually if it doesn't exist
+
+**Permission Errors**
+- Set proper permissions: `chmod -R 775 storage bootstrap/cache`
+- Ensure web server user has access
+
+**Export Not Working**
+- Run: `composer require maatwebsite/excel`
+- Run: `composer require barryvdh/laravel-dompdf`
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is proprietary software for Oxfam Bangladesh.
+
+## Support
+
+For issues or questions, contact your system administrator.
+
+## Version History
+
+- v1.0.0 (2025-01-01): Initial release
+  - User authentication
+  - Vehicle requisition forms
+  - Admin dashboard
+  - Excel/PDF export
+  - Activity logging
