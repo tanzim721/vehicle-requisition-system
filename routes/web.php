@@ -18,11 +18,28 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-// Auth routes (Laravel's built-in)
-Auth::routes();
+// Authentication Routes
+Route::middleware('guest')->group(function () {
+    // Login Routes
+    Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
+
+    // Registration Routes
+    Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register']);
+
+    // Password Reset Routes
+    Route::get('/password/reset', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+    Route::post('/password/email', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::get('/password/reset/{token}', [App\Http\Controllers\Auth\ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/password/reset', [App\Http\Controllers\Auth\ResetPasswordController::class, 'reset'])->name('password.update');
+});
+
+// Logout Route (requires authentication)
+Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
 // Authenticated user routes
-// Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     
     // Dashboard/Home
     Route::get('/dashboard', function () {
@@ -43,7 +60,7 @@ Auth::routes();
 
     // Vehicle Requisition routes
     Route::resource('requisitions', VehicleRequisitionController::class);
-// });
+});
 
 // Admin routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
@@ -69,6 +86,3 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/users/excel', [ExportController::class, 'exportUsersExcel'])->name('users.excel');
     });
 });
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

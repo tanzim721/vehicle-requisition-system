@@ -22,7 +22,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        // Middleware is now applied in routes/web.php
     }
 
     /**
